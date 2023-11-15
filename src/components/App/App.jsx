@@ -7,11 +7,25 @@ import { Container, Wrapper, Title } from './App.styled';
 import ContactForm from '../ContactForm/ContactForm';
 import ContactList from 'components/ContactList/ContactList';
 
+const TOKEN_LS = 'contacts';
+
 class App extends Component {
   state = {
     contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    this.setState({
+      contacts: JSON.parse(localStorage.getItem(TOKEN_LS)) || [],
+    });
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts.length !== prevState.contacts.length) {
+      localStorage.setItem(TOKEN_LS, JSON.stringify(this.state.contacts));
+    }
+  }
 
   onAddContact = data => {
     const isExist = this.state.contacts.some(contact => {
