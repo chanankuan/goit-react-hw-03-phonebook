@@ -16,12 +16,15 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      contacts: JSON.parse(localStorage.getItem(TOKEN_LS)) || [],
-    });
+    if (localStorage.getItem(TOKEN_LS)) {
+      this.setState({
+        contacts: JSON.parse(localStorage.getItem(TOKEN_LS)),
+      });
+    }
   }
 
   componentDidUpdate(_, prevState) {
+    console.log('updated');
     if (this.state.contacts.length !== prevState.contacts.length) {
       localStorage.setItem(TOKEN_LS, JSON.stringify(this.state.contacts));
     }
